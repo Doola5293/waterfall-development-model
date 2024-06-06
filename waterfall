@@ -1,0 +1,44 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+# Create figure and axes
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Define the stages of the Waterfall model and their positions
+stages = [
+    {"name": "Requirement Analysis", "x": 0.1, "y": 0.8, "width": 0.3, "height": 0.1},
+    {"name": "System Design", "x": 0.1, "y": 0.6, "width": 0.3, "height": 0.1},
+    {"name": "Implementation", "x": 0.1, "y": 0.4, "width": 0.3, "height": 0.1},
+    {"name": "Integration & Testing", "x": 0.1, "y": 0.2, "width": 0.3, "height": 0.1},
+    {"name": "Deployment", "x": 0.1, "y": 0.0, "width": 0.3, "height": 0.1},
+    {"name": "Maintenance", "x": 0.5, "y": 0.0, "width": 0.3, "height": 0.1}
+]
+
+# Draw rectangles and arrows
+for stage in stages:
+    rect = patches.FancyBboxPatch((stage["x"], stage["y"]), stage["width"], stage["height"], 
+                                  boxstyle="round,pad=0.3", edgecolor='black', facecolor='lightblue')
+    ax.add_patch(rect)
+    ax.text(stage["x"] + stage["width"]/2, stage["y"] + stage["height"]/2, stage["name"],
+            horizontalalignment='center', verticalalignment='center', fontsize=12)
+    
+    if stage != stages[-1]:  # Don't draw an arrow for the last stage
+        arrow = patches.FancyArrowPatch((stage["x"] + stage["width"], stage["y"] + stage["height"]/2),
+                                        (stage["x"] + stage["width"] + 0.1, stage["y"] + stage["height"]/2),
+                                        connectionstyle="arc3,rad=.5", color='black', mutation_scale=20)
+        ax.add_patch(arrow)
+
+# Draw the final arrow from Deployment to Maintenance
+arrow = patches.FancyArrowPatch((stages[-2]["x"] + stages[-2]["width"], stages[-2]["y"] + stages[-2]["height"]/2),
+                                (stages[-1]["x"], stages[-1]["y"] + stages[-1]["height"]/2),
+                                connectionstyle="arc3,rad=.5", color='black', mutation_scale=20)
+ax.add_patch(arrow)
+
+# Remove axes
+ax.set_xlim(0, 1)
+ax.set_ylim(-0.2, 1)
+ax.axis('off')
+
+# Display the plot
+plt.title("Waterfall Development Model")
+plt.show()
